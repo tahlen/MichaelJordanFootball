@@ -1,0 +1,3 @@
+kamera: höger sida går utanför map boundaries
+transition stor -> liten sloppy
+goal -> 
