@@ -55,25 +55,19 @@ public class PlayScreen implements Screen{
     public PlayScreen(MyGdxGame game) {
         atlas = new TextureAtlas("Mario_and_Enemies.pack");
         this.game = game;
-        gamecam = new OrthographicCamera();
-        
-        
-        gamePort = new FitViewport(MyGdxGame.V_WIDTH / MyGdxGame.PPM, MyGdxGame.V_HEIGHT / MyGdxGame.PPM, gamecam);
         
         hud = new Hud(game.batch);
-        
         maploader = new TmxMapLoader();
         map = maploader.load("level1.tmx");
+        
+        gamecam = new OrthographicCamera();        
+        gamePort = new FitViewport(MyGdxGame.V_WIDTH / MyGdxGame.PPM, MyGdxGame.V_HEIGHT / MyGdxGame.PPM, gamecam);
+        gamecam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
         renderer = new OrthogonalTiledMapRenderer(map, 1 / MyGdxGame.PPM);
         
-        gamecam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
-        
         world = new World(new Vector2(0, -10), true);
-        
         creator = new B2WorldCreator(this);
-        
         player = new Mario(this);
-        
         world.setContactListener(new WorldContactListener());
         
         music = MyGdxGame.manager.get("audio/music/theme1.wav", Music.class);
@@ -109,13 +103,18 @@ public class PlayScreen implements Screen{
     
     public void handleInput(float dt) {
         if(player.currentState != Mario.State.DEAD) {
-            if(Gdx.input.isKeyJustPressed(Input.Keys.UP)&&player.currentState!=Mario.State.JUMPING&&player.currentState!=Mario.State.FALLING)
+            if(Gdx.input.isKeyJustPressed(Input.Keys.UP)
+            		&& player.currentState != Mario.State.JUMPING
+            		&& player.currentState != Mario.State.FALLING)
                 player.jump();
-            if(Gdx.input.isKeyJustPressed(Input.Keys.DOWN)&&player.currentState!=Mario.State.FALLING)
+            if(Gdx.input.isKeyJustPressed(Input.Keys.DOWN)
+            		&& player.currentState != Mario.State.FALLING)
                 player.sit();
-            if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) && player.b2body.getLinearVelocity().x <= 2)
+            if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) 
+            		&& player.b2body.getLinearVelocity().x <= 2)
                 player.b2body.applyLinearImpulse(new Vector2(0.1f, 0), player.b2body.getWorldCenter(), true);
-            if(Gdx.input.isKeyPressed(Input.Keys.LEFT) && player.b2body.getLinearVelocity().x >= -2) //  && player.b2body.getPosition().x>max-1.5&&player.b2body.getPosition().x<=max låser
+            if(Gdx.input.isKeyPressed(Input.Keys.LEFT) 
+            		&& player.b2body.getLinearVelocity().x >= -2) //  && player.b2body.getPosition().x>max-1.5&&player.b2body.getPosition().x<=max låser
                 player.b2body.applyLinearImpulse(new Vector2(-0.1f, 0), player.b2body.getWorldCenter(), true);
         }
     }
@@ -181,10 +180,13 @@ public class PlayScreen implements Screen{
     }
     
     public boolean gameOver(){
-        if(player.currentState == Mario.State.DEAD && player.getStateTimer() > 3) {
+        if(player.currentState == Mario.State.DEAD 
+        		&& player.getStateTimer() > 3) {
             music.stop();
             return true;
-        } else if(hud.getTime()<=0&&player.currentState != Mario.State.DEAD) {if(player.isBig())player.redefineMario();
+        } else if(hud.getTime() <= 0 && player.currentState != Mario.State.DEAD) {
+        	if(player.isBig()) 
+        		player.redefineMario();
             music.stop();
             player.setDead();
             player.die();
@@ -195,7 +197,6 @@ public class PlayScreen implements Screen{
     @Override
     public void resize(int width, int height) {
         gamePort.update(width, height);
-        
     }
     
     public TiledMap getMap() {
@@ -225,5 +226,4 @@ public class PlayScreen implements Screen{
         world.dispose();
         hud.dispose();
     }
-    
 }
