@@ -102,7 +102,7 @@ public class MenuScreen implements Screen {
 	public void render (float delta) {
                 handleInput(delta);
                 Gdx.gl.glClearColor( 0, 0, 0, 0 );
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);    
+                Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);    
                 batch.begin();
                 sprite.draw(batch);
                 if(select==0){batch.draw(cursor, 224, 208);}
