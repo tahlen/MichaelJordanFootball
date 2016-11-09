@@ -90,7 +90,6 @@ public class PlayScreen implements Screen{
                 items.add(new Mushroom(this, idef.position.x, idef.position.y));
             }
         }
-           
     }
     
     public TextureAtlas getAtlas() {
@@ -101,21 +100,29 @@ public class PlayScreen implements Screen{
     public void show() {
     }
     
+    float maxVelocity = 2;
+    private boolean checkMaxVelocity() {
+    	return Math.abs(player.b2body.getLinearVelocity().x) <= maxVelocity;
+    }
+    
     public void handleInput(float dt) {
-        if(player.currentState != Mario.State.DEAD) {
-            if(Gdx.input.isKeyJustPressed(Input.Keys.UP)
-            		&& player.currentState != Mario.State.JUMPING
-            		&& player.currentState != Mario.State.FALLING)
+    	boolean isAlive = (player.currentState != Mario.State.DEAD);
+    	boolean isNotJumping = (player.currentState != Mario.State.JUMPING);
+    	boolean isNotFalling = (player.currentState != Mario.State.FALLING); 
+    	
+        if(isAlive) {
+            if(Gdx.input.isKeyJustPressed(Input.Keys.UP) && isNotJumping && isNotFalling)
                 player.jump();
-            if(Gdx.input.isKeyJustPressed(Input.Keys.DOWN)
-            		&& player.currentState != Mario.State.FALLING)
+            if(Gdx.input.isKeyJustPressed(Input.Keys.DOWN) && isNotFalling)
                 player.sit();
-            if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) 
-            		&& player.b2body.getLinearVelocity().x <= 2)
-                player.b2body.applyLinearImpulse(new Vector2(0.1f, 0), player.b2body.getWorldCenter(), true);
-            if(Gdx.input.isKeyPressed(Input.Keys.LEFT) 
-            		&& player.b2body.getLinearVelocity().x >= -2) //  && player.b2body.getPosition().x>max-1.5&&player.b2body.getPosition().x<=max låser
-                player.b2body.applyLinearImpulse(new Vector2(-0.1f, 0), player.b2body.getWorldCenter(), true);
+            if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) && checkMaxVelocity())
+                player.b2body.applyLinearImpulse(new Vector2(0.2f, 0)
+                								, player.b2body.getWorldCenter()
+                								, true);
+            if(Gdx.input.isKeyPressed(Input.Keys.LEFT) && checkMaxVelocity())
+                player.b2body.applyLinearImpulse(new Vector2(-0.2f, 0)
+                								, player.b2body.getWorldCenter()
+                								, true);
         }
     }
     
@@ -137,13 +144,14 @@ public class PlayScreen implements Screen{
             item.update(dt);
         
         hud.update(dt);        
-        
         MapProperties mapProperties = map.getProperties();
-
         int mapWidth = mapProperties.get("width", Integer.class);
         
+        // Center camera position to current body position
+        float halfWorldWidth = (gamePort.getWorldWidth() / 2);
         if(player.currentState != Mario.State.DEAD) {
-            if (player.b2body.getPosition().x >= (0.01f + (gamePort.getWorldWidth() / 2)) && player.b2body.getPosition().x <= mapWidth - (gamePort.getWorldWidth() / 2)) {
+            if(player.b2body.getPosition().x >= (0.01f + halfWorldWidth) 
+            		&& player.b2body.getPosition().x <= mapWidth - halfWorldWidth) {
                 gamecam.position.x = player.b2body.getPosition().x;
             }
         }
