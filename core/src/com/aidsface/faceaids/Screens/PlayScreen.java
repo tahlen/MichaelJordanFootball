@@ -24,7 +24,7 @@ import com.aidsface.faceaids.Tools.B2WorldCreator;
 import com.aidsface.faceaids.Tools.WorldContactListener;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.maps.MapProperties;
+//import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.utils.Array;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -143,11 +143,12 @@ public class PlayScreen implements Screen{
         for(Item item : items) 
             item.update(dt);
         
-        hud.update(dt);        
-        MapProperties mapProperties = map.getProperties();
-        int mapWidth = mapProperties.get("width", Integer.class);
+        hud.update(dt);
         
         // Center camera position to current body position
+        
+        // MapProperties mapProperties = map.getProperties();
+        int mapWidth = map.getProperties().get("width", Integer.class);
         float halfWorldWidth = (gamePort.getWorldWidth() / 2);
         if(player.currentState != Mario.State.DEAD) {
             if(player.b2body.getPosition().x >= (0.01f + halfWorldWidth) 
