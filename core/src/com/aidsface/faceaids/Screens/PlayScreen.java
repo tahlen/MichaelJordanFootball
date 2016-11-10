@@ -24,7 +24,6 @@ import com.aidsface.faceaids.Tools.B2WorldCreator;
 import com.aidsface.faceaids.Tools.WorldContactListener;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Music;
-//import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.utils.Array;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -68,6 +67,9 @@ public class PlayScreen implements Screen{
         world = new World(new Vector2(0, -10), true);
         creator = new B2WorldCreator(this);
         player = new Mario(this);
+        
+        // player.b2body.setGravityScale(2.0f);
+        
         world.setContactListener(new WorldContactListener());
         
         music = MyGdxGame.manager.get("audio/music/theme1.wav", Music.class);
@@ -143,11 +145,9 @@ public class PlayScreen implements Screen{
         for(Item item : items) 
             item.update(dt);
         
-        hud.update(dt);
+        //hud.update(dt);
         
         // Center camera position to current body position
-        
-        // MapProperties mapProperties = map.getProperties();
         int mapWidth = map.getProperties().get("width", Integer.class);
         float halfWorldWidth = (gamePort.getWorldWidth() / 2);
         if(player.currentState != Mario.State.DEAD) {
@@ -156,6 +156,8 @@ public class PlayScreen implements Screen{
                 gamecam.position.x = player.b2body.getPosition().x;
             }
         }
+        
+        //System.out.println(player.b2body.getGravityScale());
         
         gamecam.update();
         renderer.setView(gamecam);
@@ -180,7 +182,7 @@ public class PlayScreen implements Screen{
         game.batch.end();
         
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
-        //hud.stage.draw();
+        hud.stage.draw();
         
         if(gameOver()){
             game.setScreen(new GameOverScreen(game));

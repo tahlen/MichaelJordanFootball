@@ -2,12 +2,9 @@ package com.aidsface.faceaids.Sprites;
 
 import com.aidsface.faceaids.MyGdxGame;
 import com.aidsface.faceaids.Screens.PlayScreen;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -20,15 +17,6 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 
-
-
-
-
-
-
-
-
-
 public class Mario extends Sprite {
     public enum State { FALLING, JUMPING, STANDING, RUNNING, GROWING, SHRINKING, DEAD };
     public State currentState;
@@ -38,16 +26,18 @@ public class Mario extends Sprite {
     public Body b2body;
     
     private TextureRegion marioStand;
-    private Animation marioRun;
     private TextureRegion marioJump;
     private TextureRegion marioDead;
     private TextureRegion bigMarioStand;
     private TextureRegion bigMarioJump;
+    
+    private Animation marioRun;
     private Animation bigMarioRun;
     private Animation growMario;
     private Animation shrinkMario;
     
     private float stateTimer;
+    
     private boolean runningRight;
     private boolean marioIsBig;
     private boolean runGrowAnimation;
@@ -55,6 +45,7 @@ public class Mario extends Sprite {
     private boolean timeToDefineBigMario;
     private boolean timeToRedefineMario;
     private boolean marioIsDead;
+    
     private PlayScreen screen;
     
     public Mario(PlayScreen screen) {
